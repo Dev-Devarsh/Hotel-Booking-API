@@ -1,10 +1,13 @@
 const express = require("express");
 
-const routes = express.Router();
+const router = express.Router();
 
 // Add routes
-routes.get('/', (req,res)=>{
-    res.render('km');
+router.get('/', (req,res)=>{
+    res.send('km');
+});
+router.get('/register', (req,res)=>{
+    res.send('register');
 });
 
-module.exports = routes;
+module.exports = router;

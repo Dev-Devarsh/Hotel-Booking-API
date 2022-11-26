@@ -1,17 +1,18 @@
 const express = require("express");
-const hotelSchemas = require("../models/hotelSchema");
+const hotelSchemas = require("../models/hotelSchema.js");
 
-const routes = express.Router();
+const router = express.Router();
 
-// Add routes
-routes.post('/', async (req, res) => {
+// Add router
+router.post('/', async (req, res) => {
     const newHotel = await new hotelSchemas(req.body)
     try {
         const saveHotel = await newHotel.save()
         res.status(200).json(saveHotel)
     } catch (error) {
-
+        res.status(500).json(error)
+        log(error)
     }
 });
 
-module.exports = routes;
+module.exports = router;
