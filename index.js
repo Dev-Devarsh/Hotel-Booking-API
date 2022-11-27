@@ -9,15 +9,11 @@ config()
 
 
 const app = express();
-
 app.use(json());
-app.use("api/auth" , authRoute);
-app.use("api/user" , userRoute);
-app.use("api/hotel" , hotelRoute);
-app.use("api/rooms" , roomsRoute);
+app.use("/api/auth" , authRoute); // always use '/' before routes
+app.use("/api/user" , userRoute);
+app.use("/api/hotel" , hotelRoute);
+app.use("/api/rooms" , roomsRoute);
 
-app.get('/',(req,res)=>{
-    res.send('aefaefaef');
-})
 app.listen(4500)
 
