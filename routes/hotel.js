@@ -1,90 +1,21 @@
 import express from "express";
+import { createHotel, deleteHotel, getAllHotels, getHotelById, updateHotel } from "../controllers/hotel_controller.js";
 const router = express.Router();
-import hotel from "../models/hotelSchema.js";
-import { createError } from "../utils/error.js";
 
 // POST
-router.post("/", async (req, res, next) => {
-    try {
-        let newHotel = new hotel(req.body)
-        let saveHotel = await newHotel.save()
-        res.status(200).json(saveHotel)
-    } catch (error) {
-        // res.status(500).json(error)
-        // console.log(error);
-
-        /// Custom error
-        // next(createError(401,'You are not authenicated')) 
-
-        /// we are gonna handle error by using Next and this error will be handle by error handler in Index.js
-        next(error);
-    }
-});
+router.post("/", createHotel);
 
 //UPDATE
-router.put("/:id", async (req, res, next) => {
-    try {
-        let updateHotel = await hotel.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
-        let saveHotel = await updateHotel.save()
-        res.status(200).json(saveHotel)
-    } catch (error) {
-        // res.status(500).json(error)
-        // console.log(error);
-
-        // we are gonna handle error by using Next and this error will be handle by error handler in Index.js
-        next(error);
-    }
-});
+router.put("/:id",updateHotel);
 
 //DELETE
-router.delete("/:id", async (req, res, next) => {
-    /// How to set custom errors
-    // const failed = true;
-    // const err = new Error(); // make new Error class instance
-    // err.status = 404;
-    // err.message = "Sorry hotel can not found!"
-    try {
-        await hotel.findByIdAndDelete(req.params.id)
-        res.status(200).json('Hotel deleted')
-    } catch (error) {
-        // res.status(500).json(error)
-        // console.log(error);
-        // we are gonna handle error by using Next and this error will be handle by error handler in Index.js
-        next(error);
-    }
-});
+router.delete("/:id",deleteHotel);
 
 //GET
-router.get("/", async (req, res, next) => {
-    console.log('get');
-    // next();
-    try {
-        let hotel = await hotel.findById('asyafsuyf')
-        res.status(200).json(hotel)
-    } catch (error) {
-        // res.status(500).json(error)
-        // console.log(error);
-        
-        ///set custom status code & message with error handlers stackTrace
-        next(createError(401,'You are not authenicated')) 
-        // we are gonna handle error by using Next and this error will be handle by error handler in Index.js
-        next(error);
-    }
-});
+router.get("/",getHotelById);
 
 //GET ALL
-router.delete("/:id", async (req, res, next) => {
-    try {
-        let hotels = await hotel.find()
-        res.status(200).json(hotels)
-    } catch (error) {
-        // res.status(500).json(error)
-        // console.log(error);
-
-        // we are gonna handle error by using Next and this error will be handle by error handler in Index.js
-        next(error);
-    }
-});
+router.get("/:id",getAllHotels);
 
 
 
