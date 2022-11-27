@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const HotelSchema = new mongoose.Schema({
+const HotelSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -50,5 +50,5 @@ const HotelSchema = new mongoose.Schema({
   },
 });
 
-const hotelSchemas = mongoose.model("hotels", HotelSchema);
-module.exports = hotelSchemas;
+const hotelSchemas = model("hotels", HotelSchema);
+export default hotelSchemas;

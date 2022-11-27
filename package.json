@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Hotel booking API",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm index.js"
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/Dev-Devarsh/hotel-booking-api#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongodb": "^4.12.0",

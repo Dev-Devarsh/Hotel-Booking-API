@@ -1,12 +1,11 @@
-const express = require("express");
-const hotelSchemas = require("../models/hotelSchema.js");
+import { Router } from "express";
+import hotel from "../models/hotelSchema.js";
 
-const router = express.Router();
+const router = Router();
 
-// Add router
-router.post('/', async (req, res) => {
-    const newHotel = await new hotelSchemas(req.body)
+router.post("/", async (req, res) => {
     try {
+        const newHotel = new hotel(req.body)
         const saveHotel = await newHotel.save()
         res.status(200).json(saveHotel)
     } catch (error) {
@@ -15,4 +14,15 @@ router.post('/', async (req, res) => {
     }
 });
 
-module.exports = router;
+router.put("/:id", async (req, res) => {
+    try {
+        const updateHotel = await hotel.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
+        const saveHotel = await updateHotel.save()
+        res.status(200).json(saveHotel)
+    } catch (error) {
+        res.status(500).json(error)
+        log(error)
+    }
+})
+
+export default router;

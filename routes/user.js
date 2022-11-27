@@ -1,6 +1,6 @@
-const express = require("express");
+import { Router } from "express";
 
-const router = express.Router();
+const router = Router();
 
 // Add routes
 router.get('/', (req,res)=>{
@@ -10,4 +10,4 @@ router.get('/user', (req,res)=>{
     res.send('register');
 });
 
-module.exports = router;
+export default router;
