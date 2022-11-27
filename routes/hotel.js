@@ -34,6 +34,11 @@ router.put("/:id", async (req, res, next) => {
 
 //DELETE
 router.delete("/:id", async (req, res, next) => {
+    /// How to set custom errors
+    // const failed = true;
+    // const err = new Error(); // make new Error class instance
+    // err.status = 404;
+    // err.message = "Sorry hotel can not found!"
     try {
         await hotel.findByIdAndDelete(req.params.id)
         res.status(200).json('Hotel deleted')
