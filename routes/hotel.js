@@ -12,10 +12,10 @@ router.put("/:id",updateHotel);
 router.delete("/:id",deleteHotel);
 
 //GET
-router.get("/",getHotelById);
+router.get("/:id",getHotelById);
 
 //GET ALL
-router.get("/:id",getAllHotels);
+router.get("/",getAllHotels);
 
 
 
