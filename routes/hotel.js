@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import hotel from "../models/hotelSchema.js";
+import { createError } from "../utils/error.js";
 
 // POST
 router.post("/", async (req, res, next) => {
@@ -12,7 +13,10 @@ router.post("/", async (req, res, next) => {
         // res.status(500).json(error)
         // console.log(error);
 
-        // we are gonna handle error by using Next and this error will be handle by error handler in Index.js
+        /// Custom error
+        // next(createError(401,'You are not authenicated')) 
+
+        /// we are gonna handle error by using Next and this error will be handle by error handler in Index.js
         next(error);
     }
 });
@@ -45,7 +49,6 @@ router.delete("/:id", async (req, res, next) => {
     } catch (error) {
         // res.status(500).json(error)
         // console.log(error);
-
         // we are gonna handle error by using Next and this error will be handle by error handler in Index.js
         next(error);
     }
@@ -61,7 +64,9 @@ router.get("/", async (req, res, next) => {
     } catch (error) {
         // res.status(500).json(error)
         // console.log(error);
-
+        
+        ///set custom status code & message with error handlers stackTrace
+        next(createError(401,'You are not authenicated')) 
         // we are gonna handle error by using Next and this error will be handle by error handler in Index.js
         next(error);
     }
