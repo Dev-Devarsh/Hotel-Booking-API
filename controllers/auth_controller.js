@@ -35,7 +35,9 @@ export const login = async (req, res, next) => {
     );
     
     // here we want to send data fetch from db but we dont wanna send {password & isAdmin}
-    const { password, isAdmin, ...otherDetails } = user;
+    //user._doc will remove unnesesory information
+    //to see result remove [._doc] from below var
+    const { password, isAdmin, ...otherDetails } = user._doc;
     // OR
     // const{_id,username,__v,updatedAt,createdAt} = user;
 
