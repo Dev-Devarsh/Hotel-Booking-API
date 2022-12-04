@@ -5,10 +5,12 @@ import hotelRoute from "./routes/hotel.js";
 import roomsRoute from "./routes/rooms.js";
 import userRoute from "./routes/user.js";
 import "./dbConfig.js";
+import cookieParser from "cookie-parser";
 config()
 
 
 const app = express();
+app.use(cookieParser())
 app.use(json());
 app.use("/api/auth" , authRoute); // always use '/' before routes
 app.use("/api/user" , userRoute);

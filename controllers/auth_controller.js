@@ -1,7 +1,7 @@
 import userSchems from "../models/userSchems.js"
 import { createError } from "../utils/error.js";
 import bcrypt from "bcryptjs"
-
+import jwt from "jsonwebtoken";
 export const register = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
@@ -33,23 +33,25 @@ export const login = async (req, res, next) => {
       req.body.password,
       user.password
     );
-    
+
+    if (!isPasswordCorrect)
+      return next(createError(400, "Wrong password or username!"));
+
+    const token = jwt.sign({ _id: user._id, isAdmin: user.isAdmin }, process.env.JWT)
+
     // here we want to send data fetch from db but we dont wanna send {password & isAdmin}
     //user._doc will remove unnesesory information
     //to see result remove [._doc] from below var
     const { password, isAdmin, ...otherDetails } = user._doc;
     // OR
     // const{_id,username,__v,updatedAt,createdAt} = user;
-
     if (isPasswordCorrect) {
       // so we remove {password & isAdmin} and send {otherDetails} which will not contain{password & isAdmin}
       // other details should wrap in {}
-      res.status(200).json({ ...otherDetails });
+      res.cookie("access_tokens", token, {httpOnly:true}).status(200).json({ ...otherDetails });
       // OR
       // res.status(200).json({_id,username,createdAt,updatedAt,__v});
     }
-    if (!isPasswordCorrect)
-      return next(createError(400, "Wrong password or username!"));
   } catch (err) {
     next(err);
   }
