@@ -38,6 +38,9 @@ export const login = async (req, res, next) => {
       return next(createError(400, "Wrong password or username!"));
 
     const token = jwt.sign({ _id: user._id, isAdmin: user.isAdmin }, process.env.JWT)
+    //here we send data into token or coockie through jwt
+
+
 
     // here we want to send data fetch from db but we dont wanna send {password & isAdmin}
     //user._doc will remove unnesesory information
