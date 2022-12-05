@@ -39,7 +39,7 @@ export const deleteHotel = async (req, res, next) => {
 }
 export const getHotelById = async (req, res, next) => {
     try {
-        let hotel = await hotel.findById('asyafsuyf')
+        let hotel = await hotel.findById(req.params.id)
         res.status(200).json(hotel)
     } catch (error) {
         next(error);
@@ -56,10 +56,11 @@ export const getAllHotels = async (req, res, next) => {
 
 export const countByCity = async (req, res, next) => {
     const cities = req.query.cities.split(",");
+    console.log(req.query.cities); 
     try {
       const list = await Promise.all(
-        cities.map((city) => {
-          return hotel.countDocuments({ city: city });
+        cities.map((cities) => {
+          return hotel.countDocuments({ city: cities });
         })
       );
       res.status(200).json(list);
