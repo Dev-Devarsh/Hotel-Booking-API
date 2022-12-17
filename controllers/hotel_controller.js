@@ -1,11 +1,13 @@
 import hotel from "../models/hotelSchema.js";
+import rooms from "../models/roomSchema.js";
 import { createError } from "../utils/error.js";
 
+//never give a variable name to imported schema name it will give you late initilization error
 
 export const createHotel = async (req, res, next) => {
   try {
-    let newHotel = new hotel(req.body)
-    let saveHotel = await newHotel.save()
+    const newHotel = new hotel(req.body)
+    const saveHotel = await newHotel.save()
     res.status(200).json(saveHotel)
   } catch (error) {
     /// Custom error
@@ -17,8 +19,8 @@ export const createHotel = async (req, res, next) => {
 }
 export const updateHotel = async (req, res, next) => {
   try {
-    let updateHotel = await hotel.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
-    let saveHotel = await updateHotel.save()
+    const updateHotel = await hotel.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
+    const saveHotel = await updateHotel.save()
     res.status(200).json(saveHotel)
   } catch (error) {
     next(error);
@@ -38,31 +40,32 @@ export const deleteHotel = async (req, res, next) => {
   }
 }
 export const getHotelById = async (req, res, next) => {
+    console.log(`getHotelById ${req.params.id}`);
   try {
-    let hotel = await hotel.findById(req.params.id)
-    res.status(200).json(hotel)
+   const getHotel =  await hotel.findById(req.params.id)
+    res.status(200).json(getHotel)
   } catch (error) {
     next(error);
   }
 }
 export const getAllHotels = async (req, res, next) => {
-  const { min, max,cities } = req.query;
+  const { min, max,city } = req.query;
   // console.log(`others ${others}`);
   // console.log(`others ${min}`);
   // console.log(`others ${max}`);
   try {
-    if (min != undefined || max != undefined && cities != undefined) {
-      console.log('min max');
+    if (min != undefined || max != undefined && city != undefined) {
+      console.log(`min max ${city}`);
       const hotels = await hotel.find({
-        ...cities, cheapestPrice: {
+        city, cheapestPrice: {
           $gt: min, $lt: max
         },
       }).limit(req.query.limit);
       res.status(200).json(hotels);
-    } else if (cities != undefined) {
-      console.log(`city ${cities}`);
+    } else if (city != undefined) {
+      console.log(`city ${city}`);
       const hotels = await hotel.find({
-        cities});
+        city});
       res.status(200).json(hotels);
     } else {
       console.log('alllll');
@@ -113,7 +116,7 @@ export const getHotelRooms = async (req, res, next) => {
     const hotel = await hotel.findById(req.params.id);
     const list = await Promise.all(
       hotel.rooms.map((room) => {
-        return Room.findById(room);
+        return rooms.findById(room);
       })
     );
     res.status(200).json(list)
