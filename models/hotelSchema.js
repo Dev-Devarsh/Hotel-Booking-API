@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
-
+// here we imported Schema & model
+// we can also use [Schema] and [model] using [mongoose]
+//but for that we have import [mongoose] and use [mongoose.Schema & mongoose,model]
 const HotelSchema = new Schema({
   name: {
     type: String,
@@ -50,5 +52,4 @@ const HotelSchema = new Schema({
   },
 });
 
-const hotelSchemas = model("hotels", HotelSchema);
-export default hotelSchemas;
+export default model("hotels", HotelSchema);

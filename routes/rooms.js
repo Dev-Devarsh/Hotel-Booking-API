@@ -1,12 +1,28 @@
 import express from "express";
-const router = express.Router();
+import {
+  createRoom,
+  deleteRoom,
+  getRoom,
+  getRooms,
+  updateRoom,
+  updateRoomAvailability
+} from "../controllers/room_controller.js";
+import { verifyAdmin } from "../utils/verifyToken.js";
 
-// Add routes
-router.get("/", (req,res)=>{
-    res.send('rooms');
-});
-router.get("/rooms", (req,res)=>{
-    res.send('register');
-});
+const router = express.Router();
+//CREATE
+router.post("/:hotelid", verifyAdmin, createRoom);
+
+//UPDATE
+router.put("/availability/:id", updateRoomAvailability);
+router.put("/:id", verifyAdmin, updateRoom);
+//DELETE
+router.delete("/:id/:hotelid", verifyAdmin, deleteRoom);
+//GET
+
+router.get("/:id", getRoom);
+//GET ALL
+
+router.get("/", getRooms);
 
 export default router;

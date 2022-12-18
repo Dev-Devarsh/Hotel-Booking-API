@@ -5,10 +5,14 @@ import hotelRoute from "./routes/hotel.js";
 import roomsRoute from "./routes/rooms.js";
 import userRoute from "./routes/user.js";
 import "./dbConfig.js";
+import cookieParser from "cookie-parser";
+import cors from 'cors';
 config()
 
 
 const app = express();
+app.use(cors());
+app.use(cookieParser());
 app.use(json());
 app.use("/api/auth" , authRoute); // always use '/' before routes
 app.use("/api/user" , userRoute);

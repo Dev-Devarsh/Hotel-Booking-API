@@ -1,91 +1,39 @@
 import express from "express";
+import { countByCity, countByType, createHotel, deleteHotel, getAllHotels, getHotelById, getHotelRooms, updateHotel } from "../controllers/hotel_controller.js";
+import { verifyAdmin } from "../utils/verifyToken.js";
 const router = express.Router();
-import hotel from "../models/hotelSchema.js";
-import { createError } from "../utils/error.js";
 
-// POST
-router.post("/", async (req, res, next) => {
-    try {
-        let newHotel = new hotel(req.body)
-        let saveHotel = await newHotel.save()
-        res.status(200).json(saveHotel)
-    } catch (error) {
-        // res.status(500).json(error)
-        // console.log(error);
-
-        /// Custom error
-        // next(createError(401,'You are not authenicated')) 
-
-        /// we are gonna handle error by using Next and this error will be handle by error handler in Index.js
-        next(error);
-    }
-});
+// CREATE
+router.post("/", verifyAdmin, createHotel);
 
 //UPDATE
-router.put("/:id", async (req, res, next) => {
-    try {
-        let updateHotel = await hotel.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
-        let saveHotel = await updateHotel.save()
-        res.status(200).json(saveHotel)
-    } catch (error) {
-        // res.status(500).json(error)
-        // console.log(error);
-
-        // we are gonna handle error by using Next and this error will be handle by error handler in Index.js
-        next(error);
-    }
-});
+router.put("/:id", verifyAdmin, updateHotel);
 
 //DELETE
-router.delete("/:id", async (req, res, next) => {
-    /// How to set custom errors
-    // const failed = true;
-    // const err = new Error(); // make new Error class instance
-    // err.status = 404;
-    // err.message = "Sorry hotel can not found!"
-    try {
-        await hotel.findByIdAndDelete(req.params.id)
-        res.status(200).json('Hotel deleted')
-    } catch (error) {
-        // res.status(500).json(error)
-        // console.log(error);
-        // we are gonna handle error by using Next and this error will be handle by error handler in Index.js
-        next(error);
-    }
-});
+router.delete("/find/:id", verifyAdmin, deleteHotel);
 
 //GET
-router.get("/", async (req, res, next) => {
-    console.log('get');
-    // next();
-    try {
-        let hotel = await hotel.findById('asyafsuyf')
-        res.status(200).json(hotel)
-    } catch (error) {
-        // res.status(500).json(error)
-        // console.log(error);
-        
-        ///set custom status code & message with error handlers stackTrace
-        next(createError(401,'You are not authenicated')) 
-        // we are gonna handle error by using Next and this error will be handle by error handler in Index.js
-        next(error);
-    }
-});
+router.get("/getHotelById/:id", getHotelById);
 
 //GET ALL
-router.delete("/:id", async (req, res, next) => {
-    try {
-        let hotels = await hotel.find()
-        res.status(200).json(hotels)
-    } catch (error) {
-        // res.status(500).json(error)
-        // console.log(error);
+router.get("/", getAllHotels);
 
-        // we are gonna handle error by using Next and this error will be handle by error handler in Index.js
-        next(error);
-    }
-});
-
-
+router.get("/countByCity", countByCity);
+router.get("/countByType", countByType);
 
 export default router;
+
+// NOTE:
+
+// is every thing is okay and suddenlr app thows an error for initialization then simplt add new route after old route
+
+// OR
+
+// suffle route method 
+
+/* in this case "can not access 'hotel' before initialization at getHotelById " cuse yo resolve this i simply added new route [/getHotelById] 
+ to get hotel bu id */
+
+// OR 
+
+// suffle [countByCity] and [countByType] to up
